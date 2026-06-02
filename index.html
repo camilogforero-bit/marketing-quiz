@@ -1,0 +1,503 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --color-background-primary:#ffffff;
+  --color-background-secondary:#f4f4f6;
+  --color-background-tertiary:#e8e8ee;
+  --color-text-primary:#18181b;
+  --color-text-secondary:#52525b;
+  --color-text-tertiary:#a1a1aa;
+  --color-border-tertiary:#e4e4e7;
+  --color-border-secondary:#d4d4d8;
+}
+.gr{font-family:'Plus Jakarta Sans',sans-serif;min-height:640px;position:relative;overflow:hidden;border-radius:24px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary)}
+.screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:640px;padding:2rem 1.5rem;position:relative;z-index:2}
+.screen.active{display:flex}
+.bg-dec{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;border-radius:24px}
+.bd1{position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,#EEEDFE,transparent 70%);top:-80px;right:-60px;opacity:.8}
+.bd2{position:absolute;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,#E1F5EE,transparent 70%);bottom:-40px;left:-40px;opacity:.8}
+.bd3{position:absolute;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,#FAECE7,transparent 70%);bottom:100px;right:30px;opacity:.6}
+.bd4{position:absolute;width:70px;height:70px;border-radius:14px;transform:rotate(25deg);background:#FAEEDA;top:130px;left:-25px;opacity:.4}
+.bd5{position:absolute;width:40px;height:40px;border-radius:50%;background:#EEEDFE;top:200px;right:60px;opacity:.5}
+
+/* SPLASH */
+.sp-hero{width:128px;height:128px;border-radius:32px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;position:relative;overflow:hidden}
+.sp-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.3),transparent)}
+.sp-badge{background:#EEEDFE;color:#3C3489;font-size:11px;font-weight:700;padding:5px 14px;border-radius:100px;margin-bottom:1rem;letter-spacing:.07em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;border:1px solid #c8c4f5}
+.sp-title{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--color-text-primary);text-align:center;line-height:1.1;margin-bottom:.5rem}
+.sp-title em{color:#534AB7;font-style:normal;position:relative}
+.sp-sub{font-size:.95rem;color:var(--color-text-secondary);text-align:center;max-width:380px;margin-bottom:1.8rem;line-height:1.65}
+.cases-row{display:flex;gap:8px;margin-bottom:2rem;flex-wrap:wrap;justify-content:center}
+.case-pill{border-radius:14px;padding:9px 14px;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:8px;border:1px solid transparent}
+.cp1{background:#EEEDFE;color:#3C3489;border-color:#c8c4f5}
+.cp2{background:#E1F5EE;color:#085041;border-color:#9FE1CB}
+.cp3{background:#FAECE7;color:#712B13;border-color:#F0997B}
+.cp4{background:#FFF3E0;color:#5D3000;border-color:#FFCC80}
+.cp5{background:#F3E5F5;color:#4A148C;border-color:#CE93D8}
+.cp-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci1{background:#534AB7}.ci2{background:#1D9E75}.ci3{background:#D85A30}.ci4{background:#E87F22}.ci5{background:#8B3DB8}
+.btn-s{background:linear-gradient(135deg,#534AB7,#7F77DD);color:#fff;border:none;border-radius:14px;padding:14px 32px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:transform .15s,box-shadow .15s;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(83,74,183,0.35)}
+.btn-s:hover{transform:scale(1.03);box-shadow:0 6px 22px rgba(83,74,183,0.45)}
+.btn-s:active{transform:scale(.97)}
+
+/* QUESTION */
+.prog-wrap{width:100%;max-width:580px;margin-bottom:1.4rem}
+.prog-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:6px;font-weight:500}
+.prog-track{height:7px;background:var(--color-background-secondary);border-radius:100px;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.prog-fill{height:100%;border-radius:100px;transition:width .6s cubic-bezier(.34,1.4,.64,1)}
+.case-header{width:100%;max-width:580px;display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.case-icon-wrap{width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden}
+.case-icon-wrap::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.25),transparent)}
+.case-icon-wrap svg{width:32px;height:32px;position:relative;z-index:1}
+.case-num{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+.case-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--color-text-primary)}
+.q-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:20px;padding:1.5rem;width:100%;max-width:580px;margin-bottom:1.2rem;animation:slideIn .35s ease;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+@keyframes slideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sit-label{font-size:10px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:700}
+.sit-box{border-radius:0 12px 12px 0;padding:12px 14px;font-size:13px;line-height:1.7;margin-bottom:1.1rem;border-left-width:3px;border-left-style:solid}
+.q-text{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--color-text-primary);line-height:1.4}
+.opts{display:flex;flex-direction:column;gap:8px;width:100%;max-width:580px}
+.opt{background:var(--color-background-primary);border:1.5px solid var(--color-border-tertiary);border-radius:14px;padding:13px 16px;cursor:pointer;text-align:left;transition:all .18s;display:flex;align-items:flex-start;gap:11px;font-size:13.5px;color:var(--color-text-primary);line-height:1.55;animation:slideIn .3s ease backwards;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.opt:nth-child(1){animation-delay:.05s}.opt:nth-child(2){animation-delay:.1s}.opt:nth-child(3){animation-delay:.15s}
+.opt:hover:not(:disabled){border-color:#534AB7;background:#EEEDFE;transform:translateX(3px)}
+.opt:disabled{cursor:not-allowed}
+.opt.correct{border-color:#1D9E75!important;background:#E1F5EE!important}
+.opt.incorrect{border-color:#993C1D!important;background:#FAECE7!important}
+.opt-ltr{min-width:32px;height:32px;border-radius:10px;background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;color:var(--color-text-secondary);flex-shrink:0;margin-top:1px;transition:all .2s}
+.correct .opt-ltr{background:#1D9E75;color:#fff;border-color:#1D9E75;box-shadow:0 0 0 3px rgba(29,158,117,.2)}
+.incorrect .opt-ltr{background:#D85A30;color:#fff;border-color:#D85A30;box-shadow:0 0 0 3px rgba(216,90,48,.2)}
+
+/* FEEDBACK MODAL */
+.fb-wrap{position:absolute;inset:0;background:rgba(0,0,0,.42);z-index:10;display:flex;align-items:center;justify-content:center;padding:1.5rem;animation:fadeIn .2s ease;border-radius:24px;backdrop-filter:blur(2px)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-modal{background:var(--color-background-primary);border-radius:24px;padding:2rem 1.8rem;max-width:440px;width:100%;text-align:center;animation:popIn .3s cubic-bezier(.34,1.56,.64,1);border:0.5px solid var(--color-border-tertiary);box-shadow:0 20px 60px rgba(0,0,0,.15)}
+@keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+.fb-illus{width:86px;height:86px;border-radius:24px;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center}
+.fb-illus svg{width:50px;height:50px}
+.fb-ttl{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;margin-bottom:.5rem}
+.fb-ttl.ct{color:#0F6E56}.fb-ttl.it{color:#993C1D}
+.fb-txt{font-size:13.5px;color:var(--color-text-secondary);line-height:1.72;margin-bottom:1.5rem}
+.btn-nx{border:none;border-radius:12px;padding:13px 28px;font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:7px;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.btn-nx:hover{transform:scale(1.04)}.btn-nx:active{transform:scale(.97)}
+
+/* CONFETTI */
+#confCanvas{position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:24px}
+
+/* RESULTS */
+.res-trophy{width:116px;height:116px;border-radius:30px;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;position:relative;z-index:6;box-shadow:0 8px 30px rgba(0,0,0,.1)}
+@keyframes trophyPop{0%{transform:scale(0) rotate(-15deg);opacity:0}60%{transform:scale(1.15) rotate(3deg)}80%{transform:scale(.95)}100%{transform:scale(1) rotate(0);opacity:1}}
+.trophy-anim{animation:trophyPop .7s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes scoreCount{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.res-score{font-family:'Syne',sans-serif;font-size:4.5rem;font-weight:800;line-height:1;margin:.3rem 0;animation:scoreCount .5s .4s ease both;position:relative;z-index:6}
+.res-lbl{font-size:1rem;color:var(--color-text-secondary);margin-bottom:1.2rem;position:relative;z-index:6}
+.res-msg{font-size:.95rem;color:var(--color-text-primary);max-width:380px;text-align:center;line-height:1.65;margin-bottom:1.5rem;position:relative;z-index:6}
+.res-chips{display:flex;gap:10px;margin-bottom:1.8rem;flex-wrap:wrap;justify-content:center;position:relative;z-index:6}
+.rchip{padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.rc-ok{background:#E1F5EE;color:#0F6E56;border:1px solid #9FE1CB}
+.rc-ko{background:#FAECE7;color:#993C1D;border:1px solid #F0997B}
+.btn-retry{background:var(--color-background-secondary);color:var(--color-text-primary);border:1px solid var(--color-border-secondary);border-radius:12px;padding:12px 22px;font-family:'Syne',sans-serif;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:7px;position:relative;z-index:6}
+.btn-retry:hover{background:var(--color-background-tertiary)}
+.btns-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;position:relative;z-index:6}
+@keyframes badgePop{0%{transform:scale(0);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.perfect-badge{background:linear-gradient(135deg,#FAC775,#EF9F27);color:#412402;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;padding:6px 18px;border-radius:100px;margin-bottom:.8rem;display:inline-flex;align-items:center;gap:6px;animation:badgePop .5s .9s cubic-bezier(.34,1.56,.64,1) both;position:relative;z-index:6;border:2px solid #BA7517;box-shadow:0 4px 16px rgba(239,159,39,.3)}
+</style>
+
+<div class="gr" id="GR">
+  <div class="bg-dec"><div class="bd1"></div><div class="bd2"></div><div class="bd3"></div><div class="bd4"></div><div class="bd5"></div></div>
+  <canvas id="confCanvas"></canvas>
+
+  <!-- SPLASH -->
+  <div class="screen active" id="scSplash">
+    <div class="sp-hero" style="background:linear-gradient(135deg,#534AB7,#7F77DD)">
+      <!-- Icono mejorado: cerebro creativo / megáfono -->
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <!-- Fondo glow -->
+        <circle cx="40" cy="40" r="30" fill="white" opacity=".1"/>
+        <!-- Megáfono principal -->
+        <path d="M18 32h8l18-10v32L26 44H18V32z" fill="white" opacity=".9" rx="3"/>
+        <rect x="18" y="32" width="8" height="12" rx="2" fill="white"/>
+        <!-- Onda 1 -->
+        <path d="M52 28c3 2.5 5 7 5 12s-2 9.5-5 12" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity=".9"/>
+        <!-- Onda 2 -->
+        <path d="M57 23c5 4 8 10.5 8 17s-3 13-8 17" stroke="white" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+        <!-- Estrella destellante -->
+        <path d="M14 26l1.5-3 1.5 3 3 1.5-3 1.5-1.5 3-1.5-3-3-1.5z" fill="#FAC775"/>
+        <!-- Base del megáfono -->
+        <path d="M26 44l3 10h4l-2-10" fill="white" opacity=".7"/>
+      </svg>
+    </div>
+    <div class="sp-badge">
+      <!-- Rayo SVG inline -->
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7 1L3 7h4l-2 4 6-7H7L7 1z" fill="#534AB7"/></svg>
+      célula creativa
+    </div>
+    <h1 class="sp-title">Marketing &<br><em>Storytelling</em></h1>
+    <p class="sp-sub">5 casos reales del marketing digital. Demuestra que sabes tomar la mejor decisión creativa.</p>
+    <div class="cases-row">
+      <div class="case-pill cp1">
+        <div class="cp-icon ci1">
+          <!-- Gancho: anzuelo/copy -->
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 7.5h6.5M3 11h8" stroke="white" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="4" r="2" fill="white" opacity=".6"/><path d="M11 4h2" stroke="#534AB7" stroke-width="1" stroke-linecap="round"/></svg>
+        </div>El gancho
+      </div>
+      <div class="case-pill cp2">
+        <div class="cp-icon ci2">
+          <!-- Héroe: escudo -->
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L3 4.5v4c0 3 2.5 5 5 5.5C11 13.5 13 11 13 8.5v-4L8 2z" fill="white" opacity=".7" stroke="white" stroke-width="1"/><path d="M5.5 8l2 2 3-3" stroke="#1D9E75" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>El héroe
+      </div>
+      <div class="case-pill cp3">
+        <div class="cp-icon ci3">
+          <!-- CTA: cursor/click -->
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 4-4 1-2 4z" fill="white" opacity=".8"/><circle cx="12" cy="12" r="2.5" fill="white" opacity=".5"/><path d="M10.5 12h3M12 10.5v3" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>El CTA
+      </div>
+      <div class="case-pill cp4">
+        <div class="cp-icon ci4">
+          <!-- Emoción: corazón -->
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13S2 9 2 5.5A3.5 3.5 0 018 3.5 3.5 3.5 0 0114 5.5C14 9 8 13 8 13z" fill="white" opacity=".8"/><path d="M6 6l4 3M10 6l-4 3" stroke="#E87F22" stroke-width="1" stroke-linecap="round" opacity=".0"/></svg>
+        </div>La emoción
+      </div>
+      <div class="case-pill cp5">
+        <div class="cp-icon ci5">
+          <!-- Prueba social: grupo -->
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5" r="2" fill="white" opacity=".8"/><circle cx="11" cy="5" r="2" fill="white" opacity=".5"/><path d="M2 13c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity=".9"/><path d="M11 9c1.7.3 3 1.8 3 3.7" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity=".6"/></svg>
+        </div>Prueba social
+      </div>
+    </div>
+    <button class="btn-s" onclick="startGame()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l8 5-8 5V3z" fill="white"/></svg>
+      Comenzar el reto
+    </button>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="screen" id="scQ">
+    <div class="prog-wrap">
+      <div class="prog-labels"><span id="qLbl">Caso 1 de 5</span><span id="scLbl" style="font-weight:700">0 pts</span></div>
+      <div class="prog-track"><div class="prog-fill" id="pFill" style="width:20%"></div></div>
+    </div>
+    <div class="case-header">
+      <div class="case-icon-wrap" id="caseIconWrap"></div>
+      <div>
+        <div class="case-num" id="caseNum"></div>
+        <div class="case-name" id="caseName"></div>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="sit-label">situación</div>
+      <div class="sit-box" id="sitBox"></div>
+      <div class="q-text" id="qText"></div>
+    </div>
+    <div class="opts" id="optsGrid"></div>
+    <div class="fb-wrap" id="fbWrap" style="display:none">
+      <div class="fb-modal">
+        <div class="fb-illus" id="fbIllus"></div>
+        <div class="fb-ttl" id="fbTtl"></div>
+        <div class="fb-txt" id="fbTxt"></div>
+        <button class="btn-nx" id="btnNx" onclick="nextQ()"><span id="nxLbl">Siguiente caso</span>
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 7.5h9M8 3.5l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="scRes">
+    <div id="perfectBadge" style="display:none" class="perfect-badge">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="#412402"><path d="M7.5 1l1.8 3.8L13 5.6l-2.75 2.7.65 3.8L7.5 10.3l-3.4 1.8.65-3.8L2 5.6l3.7-.8z"/></svg>
+      ¡Puntaje perfecto!
+    </div>
+    <div class="res-trophy" id="resTrophy"></div>
+    <div class="res-score" id="resSc"></div>
+    <div class="res-lbl">de 5 respuestas correctas</div>
+    <div class="res-msg" id="resMsg"></div>
+    <div class="res-chips" id="resChips"></div>
+    <div class="btns-row">
+      <button class="btn-s" onclick="startGame()">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 7.5A5.5 5.5 0 0112.5 4M13 2v3h-3" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Jugar de nuevo
+      </button>
+      <button class="btn-retry" onclick="goS()">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 7.5h11M2 3.5h11M2 11.5h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Inicio
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// SVGs mejorados para cada ícono de caso
+const ICON_GANCHO = `<svg viewBox="0 0 32 32" fill="none">
+  <rect x="2" y="11" width="20" height="11" rx="3" fill="white" opacity=".9"/>
+  <path d="M6 13.5h10M6 16.5h7" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="26" cy="11" r="4" fill="white" opacity=".6"/>
+  <path d="M24.5 11h3M26 9.5v3" stroke="#534AB7" stroke-width="1.3" stroke-linecap="round"/>
+  <path d="M14 13l8-3" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity=".5"/>
+  <path d="M4 9l1.5-3L7 9l3 1.5L7 12l-1.5 3L4 12l-3-1.5z" fill="#FAC775" opacity=".9"/>
+</svg>`;
+
+const ICON_HEROE = `<svg viewBox="0 0 32 32" fill="none">
+  <path d="M16 4L7 7.5v7c0 5 4 9 9 10.5C21 23.5 25 19.5 25 14.5v-7L16 4z" fill="white" opacity=".7"/>
+  <path d="M11 15l3.5 3.5 6-7" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="25" cy="8" r="3" fill="#FAC775" opacity=".8"/>
+  <path d="M23.5 8h3M25 6.5v3" stroke="#E87F22" stroke-width="1.2" stroke-linecap="round"/>
+</svg>`;
+
+const ICON_CTA = `<svg viewBox="0 0 32 32" fill="none">
+  <rect x="4" y="10" width="18" height="13" rx="4" fill="white" opacity=".7" stroke="white" stroke-width=".5"/>
+  <path d="M8 17h7M13 14l4 3-4 3" stroke="#D85A30" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="26" cy="11" r="5" fill="white" opacity=".5"/>
+  <path d="M24 11l1.5 1.5L28 9" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const ICON_EMOCION = `<svg viewBox="0 0 32 32" fill="none">
+  <path d="M16 26S5 19 5 12A6 6 0 0116 8.5 6 6 0 0127 12C27 19 16 26 16 26z" fill="white" opacity=".8"/>
+  <circle cx="12" cy="13" r="1.5" fill="#E87F22"/>
+  <circle cx="20" cy="13" r="1.5" fill="#E87F22"/>
+  <path d="M12 18c1 1.5 2.5 2 4 2s3-.5 4-2" stroke="#E87F22" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M25 6l1.2-2.5 1.2 2.5 2.6 1.2-2.6 1.2-1.2 2.5-1.2-2.5L22.4 7.2z" fill="#FAC775"/>
+</svg>`;
+
+const ICON_SOCIAL = `<svg viewBox="0 0 32 32" fill="none">
+  <circle cx="12" cy="10" r="4" fill="white" opacity=".9"/>
+  <circle cx="22" cy="10" r="3.5" fill="white" opacity=".55"/>
+  <path d="M4 25c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="white" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+  <path d="M22 17c3 .5 6 3.2 6 6.8" stroke="white" stroke-width="1.8" stroke-linecap="round" opacity=".6"/>
+  <path d="M8 8l1-2 1 2 2 1-2 1-1 2-1-2-2-1z" fill="#FAC775"/>
+</svg>`;
+
+const ICON_SVGS = [ICON_GANCHO, ICON_HEROE, ICON_CTA, ICON_EMOCION, ICON_SOCIAL];
+
+// Iconos de feedback
+const FB_OK_SVG = `<svg viewBox="0 0 50 50" fill="none">
+  <circle cx="25" cy="25" r="20" fill="#9FE1CB"/>
+  <path d="M15 25l7 7 13-13" stroke="#0F6E56" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M38 12l1.2-2.5 1.2 2.5 2.6 1.2-2.6 1.2-1.2 2.5-1.2-2.5L35.4 13.2z" fill="#FAC775"/>
+</svg>`;
+
+const FB_KO_SVG = `<svg viewBox="0 0 50 50" fill="none">
+  <circle cx="25" cy="25" r="20" fill="#F5C4B3"/>
+  <path d="M17 17l16 16M33 17L17 33" stroke="#993C1D" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="25" cy="25" r="8" stroke="#993C1D" stroke-width="1.5" opacity=".3"/>
+</svg>`;
+
+const CASES=[
+  {
+    color:'#534AB7',colorLight:'#EEEDFE',colorText:'#3C3489',progColor:'#534AB7',
+    num:'Caso 1',name:'El gancho',iconSvg:ICON_GANCHO,
+    sit:'Don Carlos, el señor de la panadería del barrio, quiere vender más panes artesanales por Instagram, pero nadie lee sus publicaciones. Tu célula creativa va a redactar el gancho (la primera frase) del post.',
+    q:'¿Cuál es el mejor gancho para el post de Don Carlos?',
+    opts:[
+      {l:'A',t:'"Somos una empresa fundada en 2015 dedicada a la panadería de alta calidad con excelentes precios."'},
+      {l:'B',t:'"¿Sabías que el olor a pan caliente reduce el estrés? Te contamos el secreto detrás de nuestro pan de masa madre."'},
+      {l:'C',t:'"Venta de pan artesanal todos los días desde las 4:00 PM en la Calle 10."'}
+    ],
+    correct:1,
+    fbOk:{bg:'#E1F5EE',iconBg:'#9FE1CB',iconSvg:FB_OK_SVG,ttl:'¡Crack!',cls:'ct',txt:'Usaste el storytelling tocando una emoción y una curiosidad. Ese gancho hace que la gente deje de bajar en el celular y se quede a leer. ¡Don Carlos va a vender todo!',btnColor:'#1D9E75'},
+    fbKo:{bg:'#FAECE7',iconBg:'#F5C4B3',iconSvg:FB_KO_SVG,ttl:'¡Uf, casi!',cls:'it',txt:'Eso suena muy aburrido y corporativo, como un folleto viejo. Recuerda que en redes compites por la atención. A los jóvenes no les importa el año de fundación, ¡les importa la historia o el beneficio!',btnColor:'#D85A30'}
+  },
+  {
+    color:'#1D9E75',colorLight:'#E1F5EE',colorText:'#085041',progColor:'#1D9E75',
+    num:'Caso 2',name:'El viaje del héroe',iconSvg:ICON_HEROE,
+    sit:'El personero del colegio te pide ayuda porque nadie se está inscribiendo al torneo de microfútbol para recaudar fondos de la biblioteca. Quieren usar el "Viaje del Héroe" para el copy del post de mañana.',
+    q:'¿Quién debe ser el héroe de la historia?',
+    opts:[
+      {l:'A',t:'El torneo de microfútbol, porque es el evento principal.'},
+      {l:'B',t:'El personero, porque él tuvo la gran idea.'},
+      {l:'C',t:'El estudiante que se inscribe con sus amigos para salvar la biblioteca.'}
+    ],
+    correct:2,
+    fbOk:{bg:'#E1F5EE',iconBg:'#9FE1CB',iconSvg:FB_OK_SVG,ttl:'¡Exacto!',cls:'ct',txt:'En marketing y storytelling, el cliente siempre es el héroe. El torneo es solo la herramienta para que los estudiantes demuestren su talento y ayuden al colegio.',btnColor:'#1D9E75'},
+    fbKo:{bg:'#FAECE7',iconBg:'#F5C4B3',iconSvg:FB_KO_SVG,ttl:'¡Ojo ahí!',cls:'it',txt:'Si pones al torneo o al personero como el héroe, la historia se vuelve egocéntrica. La gente conecta cuando se siente protagonista. Cambia el enfoque y dale el escudo al estudiante.',btnColor:'#D85A30'}
+  },
+  {
+    color:'#D85A30',colorLight:'#FAECE7',colorText:'#712B13',progColor:'#D85A30',
+    num:'Caso 3',name:'El CTA estratégico',iconSvg:ICON_CTA,
+    sit:'Armaron un carrusel visual increíble en Trello para una campaña de reciclaje en el colegio. El diseño está brutal, pero necesitas que los chicos se inscriban como voluntarios en un formulario.',
+    q:'¿Cuál es el mejor cierre (CTA) para el post?',
+    opts:[
+      {l:'A',t:'"Esperamos contar con su valiosa presencia y colaboración en las instalaciones."'},
+      {l:'B',t:'"Toca el link de nuestro perfil, llena el formulario en 10 segundos y sé parte del cambio hoy mismo."'},
+      {l:'C',t:'"El reciclaje es importante para el medio ambiente del planeta tierra."'}
+    ],
+    correct:1,
+    fbOk:{bg:'#E1F5EE',iconBg:'#9FE1CB',iconSvg:FB_OK_SVG,ttl:'¡Eso es!',cls:'ct',txt:'Un Call To Action (CTA) debe ser claro, directo y decirle al usuario exactamente qué hacer y cuánto se va a demorar. ¡Inscripciones aseguradas!',btnColor:'#1D9E75'},
+    fbKo:{bg:'#FAECE7',iconBg:'#F5C4B3',iconSvg:FB_KO_SVG,ttl:'¡Te fuiste muy formal!',cls:'it',txt:'Las frases largas e institucionales hacen que la gente pierda el interés rápido. En digital necesitas instrucciones masticaditas y al grano. ¡Ajusta el copy!',btnColor:'#D85A30'}
+  },
+  {
+    color:'#E87F22',colorLight:'#FFF3E0',colorText:'#5D3000',progColor:'#E87F22',
+    num:'Caso 4',name:'La emoción como gancho',iconSvg:ICON_EMOCION,
+    sit:'Una estudiante quiere hacer un TikTok para promover el club de lectura del colegio, pero sus compañeros creen que leer es "aburrido". Necesita un gancho emocional que rompa ese prejuicio en los primeros 3 segundos del video.',
+    q:'¿Cuál es el mejor gancho emocional para abrir el TikTok?',
+    opts:[
+      {l:'A',t:'"El club de lectura del colegio se reúne todos los miércoles en la biblioteca a las 2:00 PM."'},
+      {l:'B',t:'"¿Alguna vez sentiste que un libro te entendía mejor que cualquier persona? Eso es lo que vivimos cada semana."'},
+      {l:'C',t:'"Leer mejora la concentración, el vocabulario y el rendimiento académico según estudios científicos."'}
+    ],
+    correct:1,
+    fbOk:{bg:'#E1F5EE',iconBg:'#9FE1CB',iconSvg:FB_OK_SVG,ttl:'¡Perfecto!',cls:'ct',txt:'Apelaste directamente a una emoción universal: sentirse comprendido. Eso detiene el scroll mucho mejor que horarios o estadísticas. ¡El club va a tener nuevos miembros!',btnColor:'#1D9E75'},
+    fbKo:{bg:'#FAECE7',iconBg:'#F5C4B3',iconSvg:FB_KO_SVG,ttl:'¡Frío, frío!',cls:'it',txt:'La opción A es un aviso de cartelera, y la C suena a clase de biología. En TikTok la emoción manda en los primeros 3 segundos. Si no conectas emocionalmente, el pulgar ya subió.',btnColor:'#D85A30'}
+  },
+  {
+    color:'#8B3DB8',colorLight:'#F3E5F5',colorText:'#4A148C',progColor:'#8B3DB8',
+    num:'Caso 5',name:'La prueba social',iconSvg:ICON_SOCIAL,
+    sit:'La célula creativa diseñó una campaña de Instagram para vender manualidades hechas por estudiantes. Tienen fotos increíbles del producto, pero las publicaciones no generan confianza para que la gente compre.',
+    q:'¿Qué elemento agregarías para generar más confianza y ventas?',
+    opts:[
+      {l:'A',t:'Poner el precio en grande y una cuenta regresiva de "últimas unidades disponibles".'},
+      {l:'B',t:'Compartir una historia real: una foto del comprador usando la manualidad con su testimonio en sus propias palabras.'},
+      {l:'C',t:'Escribir una descripción técnica detallada de los materiales y el proceso de elaboración.'}
+    ],
+    correct:1,
+    fbOk:{bg:'#E1F5EE',iconBg:'#9FE1CB',iconSvg:FB_OK_SVG,ttl:'¡Eso genera ventas!',cls:'ct',txt:'La prueba social es uno de los recursos más poderosos del marketing. Ver a una persona real usando y recomendando el producto elimina la desconfianza y convierte seguidores en compradores.',btnColor:'#1D9E75'},
+    fbKo:{bg:'#FAECE7',iconBg:'#F5C4B3',iconSvg:FB_KO_SVG,ttl:'¡Falta calidez!',cls:'it',txt:'La urgencia y los detalles técnicos ayudan, pero no generan confianza por sí solos. Lo que convierte en redes sociales son las personas reales: sus caras, sus palabras, sus experiencias auténticas.',btnColor:'#D85A30'}
+  }
+];
+
+let cQ=0,score=0,answers=[],done=false;
+let confParts=[],confRAF=null,confRunning=false;
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function goS(){stopConf();show('scSplash')}
+function startGame(){cQ=0;score=0;answers=[];done=false;stopConf();renderQ();show('scQ')}
+
+function renderQ(){
+  done=false;
+  const c=CASES[cQ];
+  document.getElementById('pFill').style.width=((cQ+1)/5*100)+'%';
+  document.getElementById('pFill').style.background=c.progColor;
+  document.getElementById('qLbl').textContent='Caso '+(cQ+1)+' de 5';
+  document.getElementById('scLbl').textContent=score+' pt'+(score!==1?'s':'');
+  const iw=document.getElementById('caseIconWrap');
+  iw.style.background=c.color;
+  iw.innerHTML=ICON_SVGS[cQ];
+  document.getElementById('caseNum').textContent=c.num;
+  document.getElementById('caseNum').style.color=c.color;
+  document.getElementById('caseName').textContent=c.name;
+  const sb=document.getElementById('sitBox');
+  sb.textContent=c.sit;sb.style.background=c.colorLight;sb.style.borderLeftColor=c.color;sb.style.color=c.colorText;
+  document.getElementById('qText').textContent=c.q;
+  const og=document.getElementById('optsGrid');og.innerHTML='';
+  c.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt';
+    btn.innerHTML='<span class="opt-ltr">'+opt.l+'</span><span>'+opt.t+'</span>';
+    btn.style.animationDelay=(i*0.05+0.05)+'s';
+    btn.onclick=()=>pick(i);
+    og.appendChild(btn);
+  });
+  document.getElementById('fbWrap').style.display='none';
+}
+
+function pick(idx){
+  if(done)return;done=true;
+  const c=CASES[cQ];const ok=idx===c.correct;
+  if(ok)score++;
+  answers.push({ok});
+  document.querySelectorAll('.opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===c.correct)b.classList.add('correct');
+    else if(i===idx&&!ok)b.classList.add('incorrect');
+  });
+  const fb=ok?c.fbOk:c.fbKo;
+  const il=document.getElementById('fbIllus');
+  il.style.background=fb.iconBg;il.innerHTML=fb.iconSvg;
+  const ttl=document.getElementById('fbTtl');
+  ttl.textContent=fb.ttl;ttl.className='fb-ttl '+fb.cls;
+  document.getElementById('fbTxt').textContent=fb.txt;
+  document.getElementById('btnNx').style.background=fb.btnColor;
+  document.getElementById('nxLbl').textContent=cQ===CASES.length-1?'Ver resultados':'Siguiente caso';
+  document.getElementById('fbWrap').style.display='flex';
+}
+
+function nextQ(){cQ++;if(cQ>=CASES.length){showRes();return;}renderQ();}
+
+/* CONFETTI */
+const CONF_COLORS=['#FAC775','#534AB7','#1D9E75','#D85A30','#F4C0D1','#85B7EB','#EF9F27','#5DCAA5','#F0997B','#CE93D8'];
+const SHAPES=['rect','circle','star'];
+
+function initConf(){
+  const cv=document.getElementById('confCanvas');
+  const wr=document.getElementById('GR');
+  cv.width=wr.offsetWidth||640;cv.height=wr.offsetHeight||640;
+  confParts=[];
+  for(let i=0;i<160;i++){
+    confParts.push({
+      x:Math.random()*cv.width,y:-20-Math.random()*300,r:4+Math.random()*6,
+      color:CONF_COLORS[Math.floor(Math.random()*CONF_COLORS.length)],
+      shape:SHAPES[Math.floor(Math.random()*SHAPES.length)],
+      vx:(Math.random()-0.5)*3,vy:2+Math.random()*4,rot:Math.random()*360,
+      vrot:(Math.random()-0.5)*8,opacity:1,wobble:Math.random()*Math.PI*2,wobbleSpeed:0.05+Math.random()*0.05
+    });
+  }
+}
+
+function drawStar(ctx,cx,cy,r,color,alpha){
+  ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.beginPath();
+  for(let i=0;i<5;i++){
+    const a=((i*4*Math.PI)/5)-Math.PI/2;const ai=a+Math.PI/5;
+    i===0?ctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a)):ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+    ctx.lineTo(cx+(r*0.4)*Math.cos(ai),cy+(r*0.4)*Math.sin(ai));
+  }
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+
+function tickConf(){
+  const cv=document.getElementById('confCanvas');if(!cv)return;
+  const ctx=cv.getContext('2d');ctx.clearRect(0,0,cv.width,cv.height);
+  let alive=false;
+  confParts.forEach(p=>{
+    p.wobble+=p.wobbleSpeed;p.x+=p.vx+Math.sin(p.wobble)*0.8;p.y+=p.vy;p.rot+=p.vrot;
+    if(p.y>cv.height*0.7)p.opacity=Math.max(0,p.opacity-0.025);
+    if(p.y<cv.height&&p.opacity>0)alive=true;
+    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.globalAlpha=p.opacity;
+    if(p.shape==='rect'){ctx.fillStyle=p.color;ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);}
+    else if(p.shape==='circle'){ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill();}
+    ctx.restore();
+    if(p.shape==='star')drawStar(ctx,p.x,p.y,p.r,p.color,p.opacity);
+  });
+  if(alive&&confRunning)confRAF=requestAnimationFrame(tickConf);else if(!alive)stopConf();
+}
+
+function launchConf(){confRunning=true;initConf();if(confRAF)cancelAnimationFrame(confRAF);confRAF=requestAnimationFrame(tickConf);}
+function stopConf(){confRunning=false;if(confRAF)cancelAnimationFrame(confRAF);const cv=document.getElementById('confCanvas');if(cv){const ctx=cv.getContext('2d');ctx.clearRect(0,0,cv.width,cv.height);}}
+
+function showRes(){
+  const perfect=score===5;
+  document.getElementById('perfectBadge').style.display=perfect?'inline-flex':'none';
+  const tr=document.getElementById('resTrophy');
+  if(score>=4){
+    tr.style.background='#FAEEDA';
+    tr.innerHTML='<svg width="70" height="70" viewBox="0 0 70 70" fill="none" class="trophy-anim"><circle cx="35" cy="35" r="32" fill="#FAC775" opacity=".2"/><path d="M35 12l4.5 9.5 10.5 1.5-7.6 7.4 1.8 10.5L35 36.3l-9.2 4.6 1.8-10.5L20 23l10.5-1.5z" fill="#EF9F27" stroke="#BA7517" stroke-width="1.2"/><rect x="28" y="48" width="14" height="4" rx="2" fill="#EF9F27"/><rect x="22" y="52" width="26" height="5" rx="2.5" fill="#BA7517"/><circle cx="48" cy="20" r="3" fill="#FAC775"/><path d="M46.5 20h3M48 18.5v3" stroke="#E87F22" stroke-width="1.2" stroke-linecap="round"/></svg>';
+    setTimeout(launchConf,300);
+  }else if(score>=2){
+    tr.style.background='#EEEDFE';
+    tr.innerHTML='<svg width="70" height="70" viewBox="0 0 70 70" fill="none"><circle cx="35" cy="33" r="20" fill="#EEEDFE" stroke="#534AB7" stroke-width="2"/><path d="M24 33l8 8 14-14" stroke="#534AB7" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 52h26" stroke="#534AB7" stroke-width="2" stroke-linecap="round"/><path d="M35 50v2" stroke="#534AB7" stroke-width="2" stroke-linecap="round"/></svg>';
+  }else{
+    tr.style.background='#FAECE7';
+    tr.innerHTML='<svg width="70" height="70" viewBox="0 0 70 70" fill="none"><circle cx="35" cy="33" r="20" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/><path d="M26 26l18 18M44 26L26 44" stroke="#D85A30" stroke-width="2.8" stroke-linecap="round"/><path d="M22 52h26" stroke="#D85A30" stroke-width="2" stroke-linecap="round"/><path d="M35 50v2" stroke="#D85A30" stroke-width="2" stroke-linecap="round"/></svg>';
+  }
+  const scoreColors=['#D85A30','#D85A30','#534AB7','#1D9E75','#1D9E75','#BA7517'];
+  document.getElementById('resSc').textContent=score;
+  document.getElementById('resSc').style.color=scoreColors[score]||'#BA7517';
+  const msgs=[
+    '¡Sigue practicando! El marketing tiene muchas capas. Cada intento te hace mejor creativo.',
+    '¡Vas bien! Ya estás captando algunos conceptos clave del marketing digital.',
+    '¡Buen avance! Estás entendiendo la lógica del storytelling y el copy creativo.',
+    '¡Muy bien! Dominas las bases del marketing digital. ¡Un caso más y eres experto!',
+    '¡Increíble 4/5! Estás muy cerca de la perfección. Tienes talento creativo real.',
+    '¡Perfecto 5/5! Eres un crack del marketing creativo. Don Carlos y el colegio están en muy buenas manos.'
+  ];
+  document.getElementById('resMsg').textContent=msgs[score]||msgs[5];
+  const ch=document.getElementById('resChips');ch.innerHTML='';
+  const ok=answers.filter(a=>a.ok).length;const ko=answers.filter(a=>!a.ok).length;
+  if(ok>0)ch.innerHTML+=`<div class="rchip rc-ok"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#0F6E56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>${ok} correcta${ok>1?'s':''}</div>`;
+  if(ko>0)ch.innerHTML+=`<div class="rchip rc-ko"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3l8 8M11 3L3 11" stroke="#993C1D" stroke-width="2" stroke-linecap="round"/></svg>${ko} incorrecta${ko>1?'s':''}</div>`;
+  show('scRes');
+}
+</script>
